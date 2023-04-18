@@ -21,8 +21,10 @@ import BackgroundImage from './components/BackgroundImage';
 
 import axios from 'axios';
 import { Card } from 'antd';
-
 function App() {
+  // new line start
+  const [profileData, setProfileData] = useState(null);
+
   const API_KEY = process.env.REACT_APP_API_KEY;
   const { t, i18n } = useTranslation();
   const [noData, setNoData] = useState();
@@ -194,16 +196,69 @@ function App() {
   };
 
   //upload gif
-  const [file, setFile] = useState();
-  function handleChange(e) {
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
-  }
+  const [file, setFile] = useState(null);
+  const [fileUrl, setFileUrl] = useState('');
+  const [message, setMessage] = useState('');
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+    setFileUrl(event.target.files[0]);
+  };
+  const handleGifSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const response = await axios.post('/upload', formData);
+      setFileUrl(response.data.file_path);
+      // fileUrl = response.data.file_path;
+      console.log(fileUrl);
+      setMessage('File has been uploaded successfully!');
+    } catch (error) {
+      console.error(error);
+      setMessage('Error uploading file.');
+    }
+    // fetch('http://127.0.0.1:5000/upload', {
+    //   method: 'POST',
+    //   body: formData,
+    // })
+    // function getData() {
+    //   axios({
+    //     method: 'GET',
+    //     url: '/profile',
+    //   })
+    //     .then((response) => {
+    //       const res = response.data;
+    //       setProfileData({
+    //         profile_name: res.name,
+    //         about_me: res.about,
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       if (error.response) {
+    //         console.log(error.response);
+    //         console.log(error.response.status);
+    //         console.log(error.response.headers);
+    //       }
+    //     });
+    // }
+
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   // Handle the response from your Flask API
+    //   console.log('uploaded');
+    // })
+    // .catch((error) => console.error(error));
+  };
+  // function handleChange(e) {
+  //   console.log(e.target.files);
+  //   setFile(URL.createObjectURL(e.target.files[0]));
+  // }
 
   // load current location weather info on load
   window.addEventListener('load', function () {
     navigator.geolocation.getCurrentPosition(myIP);
   });
+
   return (
     <div className='container'>
       <div
@@ -301,17 +356,26 @@ function App() {
                 />
               </button>
             </form>
-            <form className='upload' noValidate onSubmit={handleSubmit}>
+            <form className='upload' noValidate onSubmit={handleGifSubmit}>
               <div style={{ textAlign: 'center' }}>{t('upload')}</div>
               <input
                 onClick={activate}
-                onChange={handleChange}
                 src={file}
                 className='input_search'
                 type='file'
+                accept='image/gif'
+                onChange={handleFileChange}
               />
+              <button type='submit' className='upload_button'>
+                Upload
+              </button>
             </form>
             <button className='u-icon'>{t('button')}</button>
+            {message && (
+              <div className='alert alert-success' role='alert'>
+                {message}
+              </div>
+            )}
 
             {/* <button
               className='s-icon sound-toggler'
