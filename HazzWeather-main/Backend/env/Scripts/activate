@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\isro-web-gui\HazzWeather-main\Backend\env"
+VIRTUAL_ENV="C:\Users\priya\OneDrive\Desktop\Git\ISRO_Nowcast\HazzWeather-main\Backend\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
