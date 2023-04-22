@@ -193,6 +193,9 @@ body {
   border-bottom-right-radius: 0px;
   font-family: 'Josefin Sans', sans-serif;
 }
+.nav-link.active {
+  color: inherit;
+}
 
 .upload > input {
   background-color: var(--cardColor);

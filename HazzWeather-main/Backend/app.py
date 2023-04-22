@@ -19,6 +19,8 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # upload files from the user
+
+
 @app.route('/upload', methods=['POST'])
 def upload():
     # empty the folder
@@ -70,4 +72,3 @@ def extract_gif_frames(gif_path, save_folder):
 
 if __name__ == 'main':
     app.run(debug=True)
-
