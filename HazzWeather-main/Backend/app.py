@@ -6,6 +6,7 @@ from PIL import Image
 from flask import Flask, request, jsonify
 from flask import Flask
 import glob
+import time
 import os
 import sys
 import matplotlib.pyplot as plt
@@ -34,6 +35,8 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # upload files from the user
+
+
 @app.route('/upload', methods=['POST'])
 def upload():
     # empty the folder
@@ -46,6 +49,9 @@ def upload():
     preprocessed_files = glob.glob('./pysteps/radar/mch/20160711/*')
     for pf in preprocessed_files:
         os.remove(pf)
+    precip_files = glob.glob('./precip/*')
+    for prf in precip_files:
+        os.remove(prf)
 
     # check if the post request has the file part
     if 'file' not in request.files:
@@ -60,12 +66,14 @@ def upload():
         # print('File uploaded successfully')
         gif_folder = './gif_frames'
         extract_gif_frames(file_path, gif_folder)
+        pysteps_precip()
         return jsonify({'message': 'File uploaded successfully'})
     else:
         return 'Invalid file format'
 
-
 # process gif into different frames
+
+
 def extract_gif_frames(gif_path, save_folder):
     """
     Extracts each frame from a GIF image and saves it as a separate image in the specified folder.
@@ -122,7 +130,7 @@ def preprocess_frames():
         hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
         # cv.imshow('hsv', hsv)
 
-        ## BLUE
+        # BLUE
         # low_blue = np.array([94, 80, 2])
         # high_blue = np.array([126, 255, 255])
         low_blue = np.array([94, 120, 120])
@@ -131,21 +139,21 @@ def preprocess_frames():
         blue = cv.bitwise_and(img, img, mask=mask_blue)
         # cv.imshow('blue', blue)
 
-        ## RED
+        # RED
         low_red = np.array([0, 255, 200])
         high_red = np.array([14, 255, 255])
         mask_red = cv.inRange(hsv, low_red, high_red)
         red = cv.bitwise_and(img, img, mask=mask_red)
         # cv.imshow('red', red)
 
-        ## YELLOW
+        # YELLOW
         low_yellow = np.array([22, 132, 252])
         high_yellow = np.array([32, 255, 255])
         mask_yellow = cv.inRange(hsv, low_yellow, high_yellow)
         yellow = cv.bitwise_and(img, img, mask=mask_yellow)
         # cv.imshow('yellow', yellow)
 
-        ## WHITE
+        # WHITE
         sensitivity = 15
         low_white = np.array([0, 0, 255])
         high_white = np.array([30, 120, 255])
@@ -180,7 +188,9 @@ def jpg_to_gif():
             # rename the file
             os.rename(os.path.join(directory, filename),
                       os.path.join(directory, new_filename))
-    pysteps_precip()
+    print("all converted")
+    # time.sleep(5)
+    # pysteps_precip()
 
 
 def pysteps_precip():
@@ -189,19 +199,55 @@ def pysteps_precip():
     n_leadtimes = 6
     seed = 24
     timestep = 5
-    ###############################################################################
-    # Read precipitation field
-    # ------------------------
-    #
-    # First thing, the sequence of Swiss radar composites is imported, converted and
-    # transformed into units of dBR.
 
-    # Load data source config
+    # count = 0
+    # num1 = 201607112100
+    # num2 = 201607112200
+
+    # for filename in os.listdir('./pysteps/radar/mch/20160711'):
+    #     print(filename)
+    #     count = count+1
+    # print(count)
     # date = datetime.strptime("201701311205", "%Y%m%d%H%M")
-    data_source = "mch"
     # date = datetime.strptime("201701311210", "%Y%m%d%H%M")
-    date0 = datetime.strptime("201607112230", "%Y%m%d%H%M")
-    print("After date0")
+
+    # for i in range(count):
+    #     if num1 < 201607112160:
+    #         fname = num1
+    #     else:
+    #         fname = num2
+
+    # dname = str(fname)
+    # print(dname)
+
+    #    if num1 < 201607112160:
+    #         num1 = +5
+    #     else:
+    #         num2 = +5
+
+    date0 = datetime.strptime("201607112100", "%Y%m%d%H%M")
+    date1 = datetime.strptime("201607112105", "%Y%m%d%H%M")
+    date2 = datetime.strptime("201607112110", "%Y%m%d%H%M")
+    date3 = datetime.strptime("201607112115", "%Y%m%d%H%M")
+    date4 = datetime.strptime("201607112120", "%Y%m%d%H%M")
+    date5 = datetime.strptime("201607112125", "%Y%m%d%H%M")
+    date6 = datetime.strptime("201607112130", "%Y%m%d%H%M")
+    date7 = datetime.strptime("201607112135", "%Y%m%d%H%M")
+    date8 = datetime.strptime("201607112140", "%Y%m%d%H%M")
+    date9 = datetime.strptime("201607112145", "%Y%m%d%H%M")
+    date10 = datetime.strptime("201607112150", "%Y%m%d%H%M")
+    date11 = datetime.strptime("201607112155", "%Y%m%d%H%M")
+    date12 = datetime.strptime("201607112200", "%Y%m%d%H%M")
+    date13 = datetime.strptime("201607112205", "%Y%m%d%H%M")
+    date14 = datetime.strptime("201607112210", "%Y%m%d%H%M")
+    date15 = datetime.strptime("201607112215", "%Y%m%d%H%M")
+    date16 = datetime.strptime("201607112220", "%Y%m%d%H%M")
+    date17 = datetime.strptime("201607112225", "%Y%m%d%H%M")
+    date18 = datetime.strptime("201607112230", "%Y%m%d%H%M")
+
+    data_source = "mch"
+    arr_ts = [date0, date1, date2, date3, date4, date5, date6, date7, date8, date9,
+              date10, date11, date12, date13, date14, date15, date16, date17, date18]
     # Load data source config
     root_path = pysteps.rcparams.data_sources[data_source]["root_path"]
     path_fmt = pysteps.rcparams.data_sources[data_source]["path_fmt"]
@@ -212,43 +258,32 @@ def pysteps_precip():
     timestep = pysteps.rcparams.data_sources[data_source]["timestep"]
 
     print(root_path)
+    arr_sample = []
+
     # Find the radar files in the archive
-    # fns = io.importers.import_mch_gif('/content/drive/MyDrive/RadarData/data/pysteps/radar/mch/AQC170311000F_00005.801-1.gif', product='AQC', unit='mm/h', accutime=5.0)
-    # print(io.archive.find_by_date(date, root_path, path_fmt, fn_pattern, fn_ext, timestep, 0, 0))
-    fns = io.archive.find_by_date(
-        date0, root_path, path_fmt, fn_pattern, fn_ext, timestep, 0, 0)
 
-    print(fns)
-    # Read the data from the archive
-    importer = io.get_method(importer_name, "importer")
-    R, _, metadata = io.read_timeseries(fns, importer, **importer_kwargs)
+    for i in range(len(arr_ts)):
+        fns = io.archive.find_by_date(
+            arr_ts[i], root_path, path_fmt, fn_pattern, fn_ext, 8, 0, 0)
+        print(fns)
+        # Read the data from the archive
+        importer = io.get_method(importer_name, "importer")
+        R, _, metadata = io.read_timeseries(fns, importer, **importer_kwargs)
+        # print(R)
+        print(R.shape)
+        ar = np.array(R)
+        # R = R.reshape(1,1500,520)
+        print(R.shape)
+        R = R[-1, :, :]
 
-    # Convert to rain rate
-    R, metadata = conversion.to_rainrate(R, metadata)
-
-    # Upscale data to 2 km to limit memory usage
-    R, metadata = dimension.aggregate_fields_space(
-        R, metadata, space_window=None)
-
-    # R = R.reshape(1,1300,200)
-
-    # Plot the rainfall field
-    plot_precip_field(R[-1, :, :], geodata=metadata,
-                      colorscale="pysteps", colorbar=True)
-    plt.show()
-    print(R.shape)
-    # Log-transform the data to unit of dBR, set the threshold to 0.1 mm/h,
-    # set the fill value to -15 dBR
-    R, metadata = transformation.dB_transform(
-        R, metadata, threshold=0.1, zerovalue=-15.0)
-
-    # Set missing values with the fill value
-    R[~np.isfinite(R)] = -15.0
-
-    # Nicely print the metadata
-    pprint(metadata)
+        arr_sample.append(R)
+        R[~np.isfinite(R)] = -15.0
+        plot_precip_field(arr_sample[i], geodata=metadata,
+                          colorscale="pysteps", colorbar=False)
+        print(arr_sample[i].shape)
+        tosave = "./precip/plot{}.png".format(i)
+        plt.savefig(tosave)
 
 
 if __name__ == 'main':
     app.run(debug=True)
-
