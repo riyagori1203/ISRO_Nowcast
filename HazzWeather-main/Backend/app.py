@@ -52,6 +52,9 @@ def upload():
     precip_files = glob.glob('./precip/*')
     for prf in precip_files:
         os.remove(prf)
+    nowcast_files = glob.glob('./nowcasts/*')
+    for nf in nowcast_files:
+        os.remove(nf)
 
     # check if the post request has the file part
     if 'file' not in request.files:
@@ -283,7 +286,68 @@ def pysteps_precip():
         print(arr_sample[i].shape)
         tosave = "./precip/plot{}.png".format(i)
         plt.savefig(tosave)
+    nowcast(arr_sample)
+    time.sleep(550)
 
+
+def nowcast(arr_sample):
+    arr_sample = np.array(arr_sample)
+    arr_nowcast = []
+    print(arr_sample)
+    for i in range(len(arr_sample)-13):
+        # precipitation[0:5] -> Used to find motion (past data). Let's call it training precip.
+        train_precip = arr_sample[i:i+7]
+        observed_precip = arr_sample[i+7: i+19]
+        # print(train_precip.shape[0])
+        #print(i+11)
+        # precipitation[5:] -> Used to evaluate forecasts (future data, not available in "real" forecast situation)
+        # Let's call it observed precipitation because we will use it to compare our forecast with the actual observations.
+        # Estimate the motion field with Lucas-Kanade
+
+        # Import the Lucas-Kanade optical flow algorithm
+        oflow_method = motion.get_method("LK")
+
+        # Estimate the motion field from the training data (in dBR)
+        #motion_field = oflow_method(train_precip_dbr)
+        motion_field = oflow_method(train_precip)
+        n_leadtimes = 15
+
+        # Extrapolate the last radar observation
+        #extrapolate = nowcasts.get_method("extrapolation")
+        nowcast_method = nowcasts.get_method("steps")
+        # Estimate the motion field
+        V = dense_lucaskanade(train_precip)
+        R_f = nowcast_method(
+            train_precip[-3:, :, :],
+            V,
+            n_leadtimes,
+            n_ens_members=5,
+            n_cascade_levels=6,
+            R_thr=8.0,
+            kmperpixel=2.0,
+            timestep=15,
+            noise_method="parametric",
+            vel_pert_method="bps",
+            mask_method="obs",
+            probmatching_method="cdf",
+            seed=1,
+        )
+        precip_forecast = np.mean(R_f[:, :, :], axis=0)
+        arr_nowcast.append(precip_forecast[5])
+        # plt.figure(figsize=(9, 5), dpi=100)
+        plot_precip_field(arr_nowcast[i],  axis="off")
+        # Plot the motion field vectors
+        # quiver(motion_field,  step=40)
+        # print("before pltshow")
+        save = "./nowcasts/now{}.png".format(i)
+        plt.savefig(save)
+        # fulln = mylist_file[i+12]
+        # fn=fulln[3:19]
+        # f1 = h5py.File(f"/content/drive/MyDrive/RadarData/data/20180814/Now_{fn}_180.hdf5", "w")
+        # for k in range(precip_forecast.shape[0]):
+        #    f1.create_dataset(f"{fn} - {(k+1)*15}", data=precip_forecast[k])
+        # f1.close()
+    print(len(arr_nowcast))
 
 if __name__ == 'main':
     app.run(debug=True)
