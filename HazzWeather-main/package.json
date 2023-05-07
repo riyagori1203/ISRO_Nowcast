@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.24.0",
     "axios": "^1.3.5",
+    "flak": "^1.0.0",
     "gsap": "^3.11.3",
     "i18next": "^21.9.2",
     "i18next-browser-languagedetector": "^6.1.5",

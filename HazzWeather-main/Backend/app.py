@@ -281,13 +281,17 @@ def pysteps_precip():
 
         arr_sample.append(R)
         R[~np.isfinite(R)] = -15.0
+        fig,ax=plt.subplots()
         plot_precip_field(arr_sample[i], geodata=metadata,
-                          colorscale="pysteps", colorbar=False)
+                          colorscale="pysteps", colorbar=True)
         print(arr_sample[i].shape)
+        
         tosave = "./precip/plot{}.png".format(i)
-        plt.savefig(tosave)
+        fig.savefig(tosave)
+        plt.close()
+        plt.figure().clear()
     nowcast(arr_sample)
-    time.sleep(550)
+    # time.sleep(60)
 
 
 def nowcast(arr_sample):
@@ -310,8 +314,8 @@ def nowcast(arr_sample):
         # Estimate the motion field from the training data (in dBR)
         #motion_field = oflow_method(train_precip_dbr)
         motion_field = oflow_method(train_precip)
-        n_leadtimes = 15
-
+        n_leadtimes = 6
+        fig,ax=plt.subplots()
         # Extrapolate the last radar observation
         #extrapolate = nowcasts.get_method("extrapolation")
         nowcast_method = nowcasts.get_method("steps")
@@ -322,11 +326,11 @@ def nowcast(arr_sample):
             V,
             n_leadtimes,
             n_ens_members=5,
-            n_cascade_levels=6,
+            n_cascade_levels=9,
             R_thr=8.0,
             kmperpixel=2.0,
-            timestep=15,
-            noise_method="parametric",
+            timestep=10,
+            noise_method="nonparametric",
             vel_pert_method="bps",
             mask_method="obs",
             probmatching_method="cdf",
@@ -335,12 +339,13 @@ def nowcast(arr_sample):
         precip_forecast = np.mean(R_f[:, :, :], axis=0)
         arr_nowcast.append(precip_forecast[5])
         # plt.figure(figsize=(9, 5), dpi=100)
-        plot_precip_field(arr_nowcast[i],  axis="off")
+        plot_precip_field(arr_nowcast[i],  axis="off",colorbar=True)
         # Plot the motion field vectors
         # quiver(motion_field,  step=40)
         # print("before pltshow")
+        
         save = "./nowcasts/now{}.png".format(i)
-        plt.savefig(save)
+        fig.savefig(save)
         # fulln = mylist_file[i+12]
         # fn=fulln[3:19]
         # f1 = h5py.File(f"/content/drive/MyDrive/RadarData/data/20180814/Now_{fn}_180.hdf5", "w")
