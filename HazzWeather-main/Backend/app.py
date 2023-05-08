@@ -353,6 +353,22 @@ def nowcast(arr_sample):
         #    f1.create_dataset(f"{fn} - {(k+1)*15}", data=precip_forecast[k])
         # f1.close()
     print(len(arr_nowcast))
+    nowcast_to_gif()
+
+
+def nowcast_to_gif():
+    # Create the frames
+    frames = []
+    imgs = glob.glob('./nowcasts/*')
+    for i in imgs:
+        new_frame = Image.open(i)
+        frames.append(new_frame)
+
+    # Save into a GIF file that loops forever
+    frames[0].save('./nowcast.gif', format='GIF',
+                   append_images=frames[1:],
+                   save_all=True,
+                   duration=300, loop=0)
 
 if __name__ == 'main':
     app.run(debug=True)
