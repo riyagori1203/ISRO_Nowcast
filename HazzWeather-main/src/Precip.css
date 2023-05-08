@@ -1,0 +1,11 @@
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: repeat(auto);
+  grid-gap: 10px;
+  background-color: #143a62;
+}
+
+img {
+  width: 40rem;
+}

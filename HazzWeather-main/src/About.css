@@ -1,19 +1,53 @@
-body {
+body.About {
     font-family: 'Josefin Sans', 'Open Sans', sans-serif;
-    overflow:visible;
+    overflow: visible;
     background-image: url('https://c.files.bbci.co.uk/6E43/production/_89672282_hi003463449.jpg');
     background-repeat: no-repeat;
     background-position:top;
     background-size: cover;
 }
 
-.container {
+.gif-containercontainer {
     text-align: center;
 }
 
 .gif {
     /* position: center; */
-    padding-top: 100px;
+    /* padding-top: 100px; */
     display: block;
-    margin: 0 auto;
+    margin: 3% auto;
+    border-color: black;
+    border-radius: 3%;
+    border: 0.5rem rgb(0, 0, 0) solid;
+}
+
+h2 {
+    text-align: center;
+    padding: 2%;
+    background-color: #d7d4c9c1;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* grid-template-rows: repeat(2, 1fr); */
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  width: 80%; /* Set a fixed width for the grid container */
+  margin: 0 auto; /* Center align the grid container */
+}
+
+.button {
+  padding: 10px;
+  background: linear-gradient(225deg, #060b61, #9ddaed, #060b61 100%);
+  border-radius: 5px;
+  color: white !important;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 15%;
+  width: 80%;
 }

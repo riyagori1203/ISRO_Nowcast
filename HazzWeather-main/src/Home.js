@@ -14,9 +14,9 @@ import { NavLink } from 'react-router-dom';
 
 import SummaryCard from './components/SummaryCard';
 import './languages/i18n';
-import LakeBackground from './asset/lake-background.jpg';
-import Astronaut from './asset/not-found.svg';
-import SearchPlace from './asset/search.svg';
+import LakeBackground from './assets/lake-background.jpg';
+import Astronaut from './assets/not-found.svg';
+import SearchPlace from './assets/search.svg';
 import BackgroundColor from './components/BackgroundColor';
 import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
@@ -24,6 +24,7 @@ import { Card } from 'antd';
 import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom';
 
 function Home() {
+  document.body.classList.remove('About');
   // new line start
   const [profileData, setProfileData] = useState(null);
 
@@ -321,13 +322,13 @@ function Home() {
             </div>
           </div>
           <div className='search'>
-            <h2
+            <h3
               style={{
                 marginRight: currentLanguage === 'es' || 'fr' ? '10px' : '0px',
               }}
             >
               {t('title')}
-            </h2>
+            </h3>
             <hr />
             <form className='search-bar' noValidate onSubmit={handleSubmit}>
               <input

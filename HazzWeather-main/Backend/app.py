@@ -32,7 +32,7 @@ api = Flask(__name__)
 #     return response_body
 # from flask import Flask, request
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['UPLOAD_FOLDER'] = '../src/assets/uploads'
 
 # upload files from the user
 
@@ -40,19 +40,23 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 @app.route('/upload', methods=['POST'])
 def upload():
     # empty the folder
-    files = glob.glob('./uploads/*')
+    files = glob.glob('../src/assets/uploads/*')
     for f in files:
         os.remove(f)
-    gif_files = glob.glob('./gif_frames/*')
+    gif_files = glob.glob('../src/assets/gif_frames/*')
     for gf in gif_files:
         os.remove(gf)
-    preprocessed_files = glob.glob('./pysteps/radar/mch/20160711/*')
+    preprocessed_files = glob.glob(
+        './pysteps/radar/mch/20160711/*')
     for pf in preprocessed_files:
         os.remove(pf)
-    precip_files = glob.glob('./precip/*')
+    preprocessed_assets = glob.glob('../src/assets/preprocessing/*')
+    for p_f in preprocessed_assets:
+        os.remove(p_f)
+    precip_files = glob.glob('../src/assets/precip/*')
     for prf in precip_files:
         os.remove(prf)
-    nowcast_files = glob.glob('./nowcasts/*')
+    nowcast_files = glob.glob('../src/assets/nowcasts/*')
     for nf in nowcast_files:
         os.remove(nf)
 
@@ -67,7 +71,7 @@ def upload():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(file_path)
         # print('File uploaded successfully')
-        gif_folder = './gif_frames'
+        gif_folder = '../src/assets/gif_frames'
         extract_gif_frames(file_path, gif_folder)
         pysteps_precip()
         return jsonify({'message': 'File uploaded successfully'})
@@ -101,11 +105,13 @@ def extract_gif_frames(gif_path, save_folder):
 
 
 def preprocess_frames():
-    org_img = [cv.imread(file) for file in glob.glob("./gif_frames/*.jpg")]
+    org_img = [cv.imread(file)
+               for file in glob.glob("../src/assets/gif_frames/*.jpg")]
     config_file_path = pysteps.datasets.create_default_pystepsrc(
         './pysteps', config_dir=None, file_name='pystepsrc', dryrun=False)
     _ = pysteps.load_config_file(config_file_path, verbose=True)
     folder_path = "./pysteps/radar/mch/20160711"
+    folder_path1 = "../src/assets/preprocessing"
     k1 = 100
     k2 = 200
     for i in range(len(org_img)):
@@ -176,7 +182,9 @@ def preprocess_frames():
         else:
             filename = "AQC161932{}V_00005.801.jpg".format(k2)
             k2 += 5
+        cv.imwrite(os.path.join(folder_path1, filename), gray)
         cv.imwrite(os.path.join(folder_path, filename), gray)
+
         jpg_to_gif()
 
 
@@ -286,7 +294,7 @@ def pysteps_precip():
                           colorscale="pysteps", colorbar=True)
         print(arr_sample[i].shape)
         
-        tosave = "./precip/plot{}.png".format(i)
+        tosave = "../src/assets/precip/plot{}.png".format(i)
         fig.savefig(tosave)
         plt.close()
         plt.figure().clear()
@@ -344,7 +352,7 @@ def nowcast(arr_sample):
         # quiver(motion_field,  step=40)
         # print("before pltshow")
         
-        save = "./nowcasts/now{}.png".format(i)
+        save = "../src/assets/nowcasts/now{}.png".format(i)
         fig.savefig(save)
         # fulln = mylist_file[i+12]
         # fn=fulln[3:19]
@@ -359,7 +367,7 @@ def nowcast(arr_sample):
 def nowcast_to_gif():
     # Create the frames
     frames = []
-    imgs = glob.glob('./nowcasts/*')
+    imgs = glob.glob('../src/assets/nowcasts/*')
     for i in imgs:
         new_frame = Image.open(i)
         frames.append(new_frame)

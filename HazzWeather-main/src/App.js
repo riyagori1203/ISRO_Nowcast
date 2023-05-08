@@ -14,12 +14,11 @@ import DetailsCard from './components/DetailsCard';
 import SummaryCard from './components/SummaryCard';
 import About from './About';
 import Home from './Home';
+import Precip from './Precip';
+import Uploaded from './Uploaded';
+import Gifs from './Gifs';
+import Preprocessed from './Preprocessed';
 import './languages/i18n';
-import LakeBackground from './asset/lake-background.jpg';
-import Astronaut from './asset/not-found.svg';
-import SearchPlace from './asset/search.svg';
-import BackgroundColor from './components/BackgroundColor';
-import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
 import { Card } from 'antd';
 // import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom';
@@ -32,6 +31,11 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route exact path='/process-page' element={<About />} />
+          <Route exact path='/precip-page' element={<Precip />} />
+          <Route exact path='/upload-page' element={<Uploaded />} />
+          <Route exact path='/gif-page' element={<Gifs />} />
+          <Route exact path='/preprocessed-page' element={<Preprocessed />} />
+
         </Routes>
       </BrowserRouter>
     </div>
