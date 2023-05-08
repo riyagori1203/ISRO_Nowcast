@@ -365,10 +365,10 @@ def nowcast_to_gif():
         frames.append(new_frame)
 
     # Save into a GIF file that loops forever
-    frames[0].save('./nowcast.gif', format='GIF',
+    frames[0].save('../src/nowcast.gif', format='GIF',
                    append_images=frames[1:],
                    save_all=True,
-                   duration=300, loop=0)
+                   duration=700, loop=0)
 
 if __name__ == 'main':
     app.run(debug=True)

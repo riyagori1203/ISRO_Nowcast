@@ -1,0 +1,19 @@
+body {
+    font-family: 'Josefin Sans', 'Open Sans', sans-serif;
+    overflow:visible;
+    background-image: url('https://c.files.bbci.co.uk/6E43/production/_89672282_hi003463449.jpg');
+    background-repeat: no-repeat;
+    background-position:top;
+    background-size: cover;
+}
+
+.container {
+    text-align: center;
+}
+
+.gif {
+    /* position: center; */
+    padding-top: 100px;
+    display: block;
+    margin: 0 auto;
+}

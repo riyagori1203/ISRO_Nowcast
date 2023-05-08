@@ -1,11 +1,8 @@
 import React from 'react';
-
-const About = () => {
-  return (
-    <div>
-      <h1>About Page</h1>
-    </div>
-  );
-};
+import './About.css';
+import nowcast from './nowcast.gif';
+function About() {
+  return <div class='container'>{<img src={nowcast} class='gif' />}</div>;
+}
 
 export default About;
