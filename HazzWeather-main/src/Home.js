@@ -22,6 +22,7 @@ import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
 import { Card } from 'antd';
 import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom';
+import logo from './assets/ISRO-SAC.jpg'
 
 function Home() {
   document.body.classList.remove('About');
@@ -210,12 +211,13 @@ function Home() {
     event.preventDefault();
     const formData = new FormData();
     formData.append('file', file);
+    setMessage('File has been uploaded and nowcast generation is in progress...');
     try {
       const response = await axios.post('/upload', formData);
       setFileUrl(response.data.file_path);
       // fileUrl = response.data.file_path;
       console.log(fileUrl);
-      setMessage('File has been uploaded successfully!');
+      setMessage('Nowcast has been generated successfully!');
     } catch (error) {
       console.error(error);
       setMessage('Error uploading file.');
@@ -329,6 +331,7 @@ function Home() {
             >
               {t('title')}
             </h3>
+            <img src={logo} style={{height: '20%', width: '20%', borderRadius: '10%'}}/>
             <hr />
             <form className='search-bar' noValidate onSubmit={handleSubmit}>
               <input
@@ -357,8 +360,9 @@ function Home() {
                 />
               </button>
             </form>
+            <div style={{ textAlign: 'center', marginTop: '2rem', fontWeight: 700 }}>Upload Radar GIFs</div>
+            <hr/>
             <form className='upload' noValidate onSubmit={handleGifSubmit}>
-              <div style={{ textAlign: 'center' }}>{t('upload')}</div>
               <input
                 onClick={activate}
                 src={file}
@@ -368,18 +372,17 @@ function Home() {
                 onChange={handleFileChange}
               />
               <button type='submit' className='upload_button'>
-                Upload
+                Upload File and Generate Nowcast
               </button>
             </form>
             <button className='u-icon'>
               <NavLink to='/process-page' activeClassName='active'>
-                {' '}
-                {t('button')}
+                View Generated Nowcast
               </NavLink>
             </button>
 
             {message && (
-              <div className='alert alert-success' role='alert'>
+              <div className='alert alert-success' role='alert' style={{ textAlign: 'center', color: 'whitesmoke', marginTop: '2rem', fontWeight: 300 }}>
                 {message}
               </div>
             )}

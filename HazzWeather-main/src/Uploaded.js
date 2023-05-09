@@ -1,6 +1,6 @@
 import React from 'react';
 import './Precip.css';
-import upload from './assets/uploads/PDP_MAXZ.gif';
+import upload from './assets/uploads/upload.gif';
 
 function Uploaded() {
   return (

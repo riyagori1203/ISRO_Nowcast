@@ -68,7 +68,9 @@ def upload():
     if file and file.filename.endswith('.gif'):
         # os.mkdir('./uploads/gif_frames')
         # do something with the file, e.g. save it to disk
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        # os.rename(file.filename, 'upload.gif')
+        # file.filename = 'upload.gif'
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"upload.gif")
         file.save(file_path)
         # print('File uploaded successfully')
         gif_folder = '../src/assets/gif_frames'

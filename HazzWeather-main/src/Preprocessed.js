@@ -5,7 +5,10 @@ import preprocessed_images from './preprocessed_images';
 function Preprocessed() {
   return (
     <div>
-        <h2>Preprocessed Frames</h2>
+      <h2>Preprocessed Frames</h2>
+      <div class='info'>
+        Radar images are preprocessed to remove various types of noise and artifacts that can occur during data acquisition, processing, and transmission. These noise and artifacts can be caused by a variety of factors, including radar hardware and electronics, atmospheric conditions, and signal processing algorithms. Preprocessing methods are applied to radar images to remove these errors and artifacts and to ensure that the resulting precipitation estimates are as accurate as possible. This improves the quality of the data and makes it more useful for nowcasting.
+      </div>
         <div className="image-grid">
         <img src={preprocessed_images['./AQC161932100V_00005.801.jpg']} class='gif' alt="Image 1" />
         <img src={preprocessed_images['./AQC161932105V_00005.801.jpg']} class='gif' alt="Image 2" />

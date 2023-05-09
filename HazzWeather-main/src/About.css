@@ -7,10 +7,15 @@ body.About {
     background-size: cover;
 }
 
-.gif-containercontainer {
+.gif-container{
     text-align: center;
 }
-
+.info{
+  text-align: center;
+    padding: 2%;
+    background-color: #1b4966c1;
+    color:white;
+}
 .gif {
     /* position: center; */
     /* padding-top: 100px; */
@@ -36,6 +41,7 @@ h2 {
   align-items: center;
   width: 80%; /* Set a fixed width for the grid container */
   margin: 0 auto; /* Center align the grid container */
+  font: 'Josefin Sans';
 }
 
 .button {
@@ -50,4 +56,11 @@ h2 {
   font-size: 16px;
   margin-bottom: 15%;
   width: 80%;
+  font: 'Josefin Sans';
+}
+
+.button:hover {
+  cursor: pointer;
+  background: linear-gradient(23deg, #060b61, #9ddaed 50%);
+  transform: scale(1.05);
 }
