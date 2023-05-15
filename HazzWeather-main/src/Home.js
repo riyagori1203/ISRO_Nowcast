@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, ReactDOM, React, PropTypes, styled } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RiCelsiusFill, RiFahrenheitFill } from 'react-icons/ri';
 import {
@@ -17,8 +17,6 @@ import './languages/i18n';
 import LakeBackground from './assets/lake-background.jpg';
 import Astronaut from './assets/not-found.svg';
 import SearchPlace from './assets/search.svg';
-import BackgroundColor from './components/BackgroundColor';
-import BackgroundImage from './components/BackgroundImage';
 import axios from 'axios';
 import { Card } from 'antd';
 import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom';
@@ -42,7 +40,6 @@ function Home() {
     return localStorage.getItem('language') || 'en';
   });
   const [loading, setLoading] = useState(false);
-  // const [backgroundSoundEnabled, setBackgroundSoundEnabled] = useState(true);
   const [isFahrenheitMode, setIsFahrenheitMode] = useState(false);
   const degreeSymbol = useMemo(
     () => (isFahrenheitMode ? '\u00b0F' : '\u00b0C'),
@@ -264,14 +261,17 @@ function Home() {
     navigator.geolocation.getCurrentPosition(myIP);
   });
 
+
+  // disclaimer
+
+
+
   return (
     <div className='container'>
       <div
         className='blur'
         style={{
-          background: `${
-            weatherData ? BackgroundColor(weatherData) : '#a6ddf0'
-          }`,
+          background: '#a6ddf0',
           top: '-10%',
           right: '0',
         }}
@@ -286,14 +286,7 @@ function Home() {
         }}
       ></div>
       <div className='content'>
-        <div
-          className='form-container'
-          style={{
-            backgroundImage: `url(${
-              weatherData ? BackgroundImage(weatherData) : LakeBackground
-            })`,
-          }}
-        >
+        <div className='form-container'>
           <div className='name'>
             <div>{t('headline')}</div>
             <div className='toggle-container'>
@@ -386,12 +379,6 @@ function Home() {
                 {message}
               </div>
             )}
-            {/* <button
-              className='s-icon sound-toggler'
-              onClick={() => setBackgroundSoundEnabled((prev) => !prev)}
-            >
-              {backgroundSoundEnabled ? <TbVolume /> : <TbVolumeOff />}
-            </button> */}
           </div>
         </div>
         <div className='info-container'>
@@ -449,15 +436,14 @@ function Home() {
                         Dhaka, Canada or maybe USA.
                       </p>
                     </>
-                  )}
-                </div>
+                    )}
+                  </div>
               ) : (
                 <>
                   <h1 className='centerTextOnMobile'>{t('today')}</h1>
                   <DetailsCard
                     weather_icon={weatherIcon}
                     data={weatherData}
-                    // soundEnabled={backgroundSoundEnabled}
                     isFahrenheitMode={isFahrenheitMode}
                     degreeSymbol={degreeSymbol}
                   />
@@ -479,6 +465,11 @@ function Home() {
             </span>
           )}
         </div>
+      </div>
+      <div>
+        <marquee behavior="scroll" direction="left">
+          Disclaimer: Weather Data is fetched from <a href="https://openweathermap.org/api">OpenWeatherMapAPI</a>. This is an experimental nowcast model developed under Student Project, SAC, ISRO.
+        </marquee>
       </div>
     </div>
   );

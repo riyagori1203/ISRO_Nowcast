@@ -40,9 +40,9 @@ app.config['UPLOAD_FOLDER'] = '../src/assets/uploads'
 @app.route('/upload', methods=['POST'])
 def upload():
     # empty the folder
-    files = glob.glob('../src/assets/uploads/*')
-    for f in files:
-        os.remove(f)
+    # files = glob.glob('../src/assets/uploads/*')
+    # for f in files:
+    #     os.remove(f)
     gif_files = glob.glob('../src/assets/gif_frames/*')
     for gf in gif_files:
         os.remove(gf)

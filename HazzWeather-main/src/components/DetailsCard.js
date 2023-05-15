@@ -8,7 +8,6 @@ import MoreInfoCard from './MoreInfoCard';
 function DetailsCard({
   weather_icon,
   data,
-  soundEnabled,
   isFahrenheitMode,
   degreeSymbol,
 }) {
@@ -48,7 +47,6 @@ function DetailsCard({
 
       <MoreInfoCard data={{ formattedData, degreeSymbol, main, clouds, t }} />
 
-      {/* <BackgroundSound weather={weather[0]} soundEnabled={soundEnabled} /> */}
     </div>
   );
 }
